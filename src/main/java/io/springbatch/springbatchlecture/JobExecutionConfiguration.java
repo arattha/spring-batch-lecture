@@ -48,8 +48,10 @@ public class JobExecutionConfiguration {
     public Step step2() {
         return stepBuilderFactory.get("step2")
                 .tasklet((contribution, chunkContext) -> {
-//                    throw new RuntimeException("JobExecution has failed");
                     System.out.println("step2 has executed");
+                    //throw new RuntimeException("JobExecution has failed"); //같은 instanceId의 인스턴스도 실패시에는 재시도가 가능하다.
+                    //실패 시에는 Execution 테이블에 같은 instanceId로 여러 행이 생길 수 있지만, 성공 하고부터는 아님. 1:M
+                    
                     return RepeatStatus.FINISHED;
                 })
                 .build();
